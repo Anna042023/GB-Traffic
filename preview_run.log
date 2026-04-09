@@ -1,0 +1,17 @@
+
+[INFO] Processing dataset: PEMS08
+[DONE] PEMS08 preview generated.
+
+[INFO] Processing dataset: METR-LA
+[WARN] Skip METR-LA: Cannot find data file for METR-LA. Tried: ['/data/LiFeiFei/MM/datasets/METR-LA/METR-LA.npz', '/data/LiFeiFei/MM/datasets/METR_LA/METR_LA.npz', '/data/LiFeiFei/MM/datasets/METRLA/METRLA.npz']
+
+[INFO] Processing dataset: XMBRT
+[WARN] Skip XMBRT: Cannot find data file for XMBRT. Tried: ['/data/LiFeiFei/MM/datasets/XMBRT/XMBRT.npz', '/data/LiFeiFei/MM/datasets/XMBRT/xmb_rt.npz']
+
+[INFO] Processing dataset: HZMetro
+[DONE] HZMetro preview generated.
+
+[INFO] Processing dataset: BJMetro
+[WARN] Skip BJMetro: [Errno 2] No such file or directory: '/data/LiFeiFei/MM/datasets/BJMetro/train.pkl'
+
+All requested datasets processed (preview mode).
