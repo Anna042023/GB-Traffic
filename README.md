@@ -155,3 +155,27 @@ Granular-ball graph $\mathcal{G} = (\mathcal{V}, \mathcal{E})$ with node feature
 
 7. **Return** $\mathcal{G}=(\mathcal{V},\mathcal{E},X)$.
 
+## Detailed Discussions on Potential Applications
+
+The GB-Traffic dataset introduces a new paradigm for traffic prediction by integrating three intrinsically alignedmodalities: raw temporal signals, multi-scale visual encodings, and semantic granular-ball graphs with controllablelevels of abstraction. This multimodal composition, combined with the dataset's coverage of diverse traffic domains(highways, urban roads, and metro systems), provides a rich foundation for advancing artificial intelligence (Al) inspatio-temporal prediction. In what follows, we detail three promising applications that highlight the dataset's unique contributions to the field.
+
+### Multimodal Vision-Language Modeling for Traffic Scenes
+
+The alignment of multi-scale traffic images with hierarchical graph structures makes GB-Traffic an ideal resource foradapting vision-language models (VLMs) to various traffic scenes. In real-world traffic management, experts oftenreason across multiple levels of abstraction, from macroscopic city-wide patterns to microscopic localized events. GB.Traffic enables the development of VLMs that can generate natural language descriptions capturing both global trendsand fine-grained anomalies, thereby facilitating intuitive human-machine interaction. By leveraging the multi-granularity graphs, models can learn to ground textual concepts (e.g, morning rush hour, northbound bottleneck)directly onto semantically meaningful regions of the traffic image. This capability paves the way for multimodaldecision-support systems where traffic operators can query and receive explanations in natural language, significantlylowering the barrier to deploying Al in control rooms.
+
+### Parameter-Efficient Fine-Tuning for Spatio-Temporal Graphs
+
+As large-scale pre-trained models become increasingly common in spatio-temporal learning, fully fine-tuning them forevery downstream task is often impractical due to computational and storage constraints. Parameter-efficient fine-tuning (PEFT) offers a compelling alternative by updating only a small fraction of parameters while preserving theknowledge acquired during pre-training. GB-Traffic provides a controlled environment for benchmarking PEFTmethods on graph-structured data. The dataset's explicit multi-granularity levels allow systematic study of how thesimilarity between pre-training and target domains affects the efficacy of different PEFT strategies (e.g. prompt tuning,adapter modules). Moreover, the presence of both physical and semantic graph representations enables investigationinto which graph structures yield the most transferable features. This positions GB-Traffic as a valuable testbed fordeveloping efficient adaptation techniques tailored to spatio-temporal applications, thereby reducing the resourcefootprint of deploying advanced traffic prediction models in practice.
+
+### Test-Time Adaptation for Dynamic Traffic Environments
+
+A major obstacle to the real-world deployment of traffic prediction models is their susceptibility to domain shifts-changes in traffic patterns caused by special events, weather, or infrastructure modifications. Test-time adaptation(TTA) addresses this challenge by allowing a pre-trained model to adapt to a new environment using only unlabeledtest data. GB -Traffic is uniquely suited to benchmark TTA methods because its six constituent datasets representdistinct domains with varying characteristics (e.g, highway Vs. metro, different geographic regions). Researchers cansimulate continuous domain shifts by sequentially evaluating models on different subsets, mimicking the evolvingconditions faced by operational systems. The inclusion of multimodal data further enables exploration of howcombining visual, temporal and graph modalities can improve adaptation robustness. By providing a realistic anddiverse benchmark, GB-Traffic supports the development of TTA techniques that can maintain high accuracy acrossheterogeneous and evolving traffic scenarios, a critical requirement for intelligent transportation systems deployed at scale.
+
+GB - Traffic advances traffic prediction by providing a multimodal benchmark that integrates visual encodings
+hierarchical semantic graphs, and controllable granularity, capabilities absent in existing datasets. Building upon thisfoundation, the three applications outined above collectively address critical challenges in the field. Vision-languageinteraction enables intuitive human-AI collaboration. Parameter-efficient fine-tuning facilitates resource-consciousmodel adaptation. TTA ensures robust performance under real-world domain shifts. In conclusion, these directionsillustrate how GB- Traffic can drive the development of next-generation intelligent transportation systems that are not only accurate but also interpretable, efficient, and resilient.
+
+## Quick Start
+
+A Python unified loader is provided to seamlessly interface with all six datasets. It supports batching, modalityselection, and on-the-fly augmentation.
+
+(Code and usage instructions will be updated upon final release as mentioned in the paper: [https://github.com/Anna042023/GB-Traffic](https://github.com/Anna042023/GB-Traffic)
