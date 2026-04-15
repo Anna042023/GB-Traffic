@@ -94,3 +94,28 @@ All datasets share a perfectly aligned standard setting for robust, cross-datase
 
 - **Data Packaging**: Each sample includes the raw 12-step sequence, a 128x128 multi-scale image, and three (coarse, medium, fine) granular-ball graphs.
 
+## Multimodal Traffic Prediction Dataset Construction
+
+- **Multi-Scale Image Construction**
+
+Starting from the raw traffic time series, fixed-length historical sequences (12 time steps) are first extracted using asliding window, and each node's sequence is normalized. Then, multi-scale decomposition is performed (movingaverages with window sizes of 1, 3, 6, and 12) to capture patterns at different temporal granularities. For each scale,three types of features are constructed: (1) expanding the sequence into a 2D matrix to preserve trend information, (2)applying the Gramian Angular Field (GAF) to map the time series into a 2D angular correlation matrix for modelingglobal temporal dependencies, and (3) computing first-order differences to capture dynamic changes. These featuresacross different scales are combined into multi-channel data and resized to a unified resolution, resulting in the multi-scale image representation. This process effectively transforms the time series into an image modality.
+
+- **Granular-Ball Graph Construction**
+
+Based on the obtained multi-scale images, each pixel is initially treated as a granular ball node, and iterative merging isperformed according to spatial adjacency. The merging process is guided by a "purity" metric (defined by the meanand variance of pixel values) to measure the internal consistency of regions. When the joint purity of adjacent regionsexceeds a predefined threshold, they are merged to form granular balls of varying sizes, enabling adaptive regionpartitioning. Subsequently, statistical features (e.g. mean and standard deviation across channels) are extracted foreach granular ball as node representations. The graph structure is then constructed using two types of connectionslocal edges based on spatial adjacency and long-range edges based on feature similarity. The resulting granular ballgraph preserves both the spatial structure of the image and semantic relationships, achieving a transformation from
+pixel-level representations to structured graph representations.
+
+## T-GRIG Algorithm for Granular-Ball Graph Construction
+
+The T-GRIG algorithm, which constructs multi-granularity semantic graphs from multi-scale traffic images, is detailed in
+this section. Rather than sering as a task-specific engineering design, it operates under three general principles for
+constructing semantic representations of traffic dynamics:
+
+- **Temporal dominance principle.** Traffic patterns are inherently time-dependent therefore, variations along thetemporal axis should be emphasized during representation construction to better capture dynamic transitions such as peak hours and congestion propagation.
+  
+- **Multi-channel consistency principle.** A valid structural abstraction should remain consistent across multiplerepresentations of the same data (e.g. different temporal scales and transformations), ensuring robustness andreducing representation bias.
+  
+- **Semantic connectivity principle.** Nodes should be connected not only based on spatial adjacency but also
+according to functional similarity, enabling the representation to capture long-range correlations and
+synchronized behaviors across distant regions.
+
