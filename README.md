@@ -23,21 +23,21 @@ controllable multi-granularity graph abstractions (coarse, medium, and fine).
 
 - **T-GRIG Algorithm**: A tailored Traffic-aware GRanular-ball Image Graph algorithm that adaptively transforms traffic images into semantic graphs with four key enhancements:
 
- ◦ Temporal-aware gradient computation
+  ◦ Temporal-aware gradient computation
 
- ◦ Multi-channel joint purity
+  ◦ Multi-channel joint purity
 
- ◦ Adaptive thresholding
+  ◦ Adaptive thresholding
 
- ◦ Semantic edge construction beyond spatial adjacency
+  ◦ Semantic edge construction beyond spatial adjacency
 
 - **Extensive Benchmarking**: Unveils key findings challenging existing model-centric evaluation:
   
- ◦ Granular-ball graph modality consistently outperforms physical graphs.
+  ◦ Granular-ball graph modality consistently outperforms physical graphs.
 
- ◦ Model rankings shift across granularity levels.
+  ◦ Model rankings shift across granularity levels.
  
- ◦ Semantic representations improve cross-city transferability by approximately 15%.
+  ◦ Semantic representations improve cross-city transferability by approximately 15%.
  
- ◦ Graph nodes show interpretable mapping to temporal segments (e.g., morning peaks).
+  ◦ Graph nodes show interpretable mapping to temporal segments (e.g., morning peaks).
 
