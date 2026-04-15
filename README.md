@@ -1,7 +1,6 @@
 # GB-Traffic: A Multimodal Dataset for Traffic Predictionwith Granular-Ball Graph Representations
 
-<img src="https://img.shields.io/badge/Paper-ACM%20MM-blue" alt="Paper">
-<img src="https://img.shields.io/badge/Dataset-Public-green" alt="Dataset">
+<img src="https://img.shields.io/badge/Paper-ACM%20MM-blue" alt="Paper">  <img src="https://img.shields.io/badge/Dataset-Public-green" alt="Dataset">
 
 This repository contains the official dataset and code for the paper: **"GB-Traffic: A Multimodal Dataset for Traffic Prediction with Granular-Ball Graph Representations"**.
 
