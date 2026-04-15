@@ -41,3 +41,56 @@ controllable multi-granularity graph abstractions (coarse, medium, and fine).
  
   ◦ Graph nodes show interpretable mapping to temporal segments (e.g., morning peaks).
 
+## Project Structure
+
+```plaintext
+GB-Traffic/
+├── Model/
+│   ├── GAF_op.py    # Multi-scale image construction
+│   └── GB.py        # Granular ball graph construction
+├── DATA/
+│   ├── PEMS04/      # Multimodal data for PEMS04
+│   ├── PEMS08/      # Multimodal data for PEMS08
+│   ├── METR-LA/     # Multimodal data for METR-LA
+│   ├── BJMetro/     # Multimodal data for BJMetro
+│   ├── HZMetro/     # Multimodal data for HZMetro
+│   └── XMBRT/       # Multimodal data for XMBRT
+├── GB-Traffic.png    # Overview of the data construction pipeline
+└── README.md
+```
+
+## Dataset Details
+
+GB- Traffic seamlessly aggregates six representative real-world traffic datasets under a unified data protocol coveringdiverse scenarios:
+
+- **Highways**: PeMS04, PeMS08, METR-LA
+  
+- **Urban Bus Rapid Transit**: XMBRT
+  
+- **Metro Systems**: HZMetro, BJMetro
+
+### Dataset Statistics
+
+| Dataset    | Domain      | Nodes | Samples | Time Span                       |
+|------------|-------------|-------|---------|---------------------------------|
+| PeMS04     | Highway     | 307   | 16,992  | January to February, 2018       |
+| PeMS08     | Highway     | 170   | 17,856  | July to August, 2016            |
+| METR-LA    | Urban Road  | 207   | 34,272  | March to June 2012              |
+| XMBRT      | BRT         | 44    | 4,297   | March to March, 2019            |
+| HZMetro    | Metro       | 80    | 5,593   | January 2019                    |
+| BJMetro    | Metro       | 276   | 2,677   | February to March 2018          |
+
+Format: 12 historical steps predict 12 future steps (12→12) at 5-minute intervals.
+
+### Unified Protocol
+
+All datasets share a perfectly aligned standard setting for robust, cross-dataset evaluation:
+
+- **Resampling**: 5-minute intervals via linear interpolation / averaging.
+
+- **Task**: 12-step historical window (60 minutes) to predict the next 12 steps (60 minutes).
+
+- **Data Splits**: Chronological splitting into training, validation, and test sets with a 6:2:2 ratio.
+
+- **Data Packaging**: Each sample includes the raw 12-step sequence, a 128x128 multi-scale image, and three (coarse, medium, fine) granular-ball graphs.
+
