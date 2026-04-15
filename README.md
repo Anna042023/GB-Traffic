@@ -119,67 +119,39 @@ constructing semantic representations of traffic dynamics:
 according to functional similarity, enabling the representation to capture long-range correlations and
 synchronized behaviors across distant regions.
 
-<div style="border: 1px solid #ccc; border-radius: 8px; padding: 16px; margin: 20px 0; background-color: #f9f9f9;">
-  <div style="font-weight: bold; border-bottom: 1px solid #ccc; padding-bottom: 8px; margin-bottom: 16px;">
-    Algorithm T-GRIG: Traffic-aware Granular-ball Image Graph Construction
-  </div>
-  
-  <div style="font-family: monospace; font-size: 14px;">
-    <strong>Input:</strong> Multi-scale traffic image \(I \in \mathbb{R}^{H \times W \times C}\) (C can be 1 for averaged grayscale or larger for multi-channel GAF/MTF), purity threshold \(P_{thr}\), adaptive factor \(\beta\), edge similarity threshold \(\theta_{sim}\).<br>
-    <strong>Output:</strong> Granular-ball graph \(\mathcal{G} = (\mathcal{V}, \mathcal{E})\) with node features \(X\).
-  </div>
+### Algorithm T-GRIG: Traffic-aware Granular-ball Image Graph Construction
 
-  <ol style="list-style-type: none; counter-reset: step; margin-top: 16px; padding-left: 0;">
-    <li style="counter-increment: step; margin-bottom: 12px;">
-      <span style="display: inline-block; width: 28px; font-weight: bold;">1.</span> 
-      Compute gradient map \(G\) emphasizing temporal axis: 
-      \(G = \alpha \cdot |\nabla_x I| + |\nabla_y I|\), where \(\alpha > 1\) (default 1.5).
-    </li>
-    <li style="counter-increment: step; margin-bottom: 12px;">
-      <span style="display: inline-block; width: 28px; font-weight: bold;">2.</span> 
-      Initialize set of granular balls \(\mathcal{B}\) with each pixel as a separate ball.
-    </li>
-    <li style="counter-increment: step; margin-bottom: 12px;">
-      <span style="display: inline-block; width: 28px; font-weight: bold;">3.</span> 
-      Compute adaptive threshold factor \(\tau_{adapt} = 1 + \beta \log(1+\sigma_s^2)\), where \(\sigma_s^2\) is the historical variance of the sensor.
-    </li>
-    <li style="counter-increment: step; margin-bottom: 12px;">
-      <span style="display: inline-block; width: 28px; font-weight: bold;">4.</span> 
-      <strong>Repeat</strong> (merge pass) until no merges occur for a complete pass:
-      <ol style="list-style-type: none; margin-top: 8px; padding-left: 28px;">
-        <li style="counter-increment: step; margin-bottom: 8px;">
-          <span style="display: inline-block; width: 28px; font-weight: bold;">a.</span> 
-          Randomly select a ball \(b \in \mathcal{B}\).
-        </li>
-        <li style="counter-increment: step; margin-bottom: 8px;">
-          <span style="display: inline-block; width: 28px; font-weight: bold;">b.</span> 
-          Find its neighboring balls \(\mathcal{N}(b)\) based on spatial adjacency.
-        </li>
-        <li style="counter-increment: step; margin-bottom: 8px;">
-          <span style="display: inline-block; width: 28px; font-weight: bold;">c.</span> 
-          For each neighbor \(b' \in \mathcal{N}(b)\):
-          <ul style="margin-top: 6px; margin-bottom: 0;">
-            <li>Compute joint purity \(P(b \cup b') = \frac{1}{C} \sum_{c=1}^{C} \exp\left( -\frac{\sigma_c^2}{\mu_c^2 + \epsilon} \right)\), where \(\mu_c\) and \(\sigma_c\) are mean and standard deviation of channel \(c\) in the union region.</li>
-            <li>If \(P(b \cup b') \ge P_{thr} \cdot \tau_{adapt}\):
-              <ul><li>Merge \(b\) and \(b'\) into a new ball.</li><li>Update \(\mathcal{B}\).</li><li>Break inner loop.</li></ul>
-            </li>
-          </ul>
-        </li>
-      </ol>
-    </li>
-    <li style="counter-increment: step; margin-bottom: 12px;">
-      <span style="display: inline-block; width: 28px; font-weight: bold;">5.</span> 
-      For each merged ball \(v \in \mathcal{B}\), compute node features \(X_v\) (geometry, image statistics, traffic semantics).
-    </li>
-    <li style="counter-increment: step; margin-bottom: 12px;">
-      <span style="display: inline-block; width: 28px; font-weight: bold;">6.</span> 
-      Construct edges \(\mathcal{E}\): For every pair of balls \(u, v\), if spatial overlap exists (pixel-level adjacency) <strong>or</strong> feature similarity \(\cos(X_u, X_v) > \theta_{sim}\), add edge \((u, v)\).
-    </li>
-    <li style="counter-increment: step; margin-bottom: 12px;">
-      <span style="display: inline-block; width: 28px; font-weight: bold;">7.</span> 
-      <strong>Return</strong> \(\mathcal{G}=(\mathcal{V},\mathcal{E},X)\).
-    </li>
-  </ol>
-</div>
+**Input:**  
+Multi-scale traffic image $I \in \mathbb{R}^{H \times W \times C}$ ($C$ can be 1 for averaged grayscale or larger for multi-channel GAF/MTF), purity threshold $P_{thr}$, adaptive factor $\beta$, edge similarity threshold $\theta_{sim}$.
 
+**Output:**  
+Granular-ball graph $\mathcal{G} = (\mathcal{V}, \mathcal{E})$ with node features $X$.
+
+1. **Compute gradient map** $G$ emphasizing temporal axis:  
+   $G = \alpha \cdot |\nabla_x I| + |\nabla_y I|$, where $\alpha > 1$ (default 1.5).
+
+2. **Initialize** set of granular balls $\mathcal{B}$ with each pixel as a separate ball.
+
+3. **Compute adaptive threshold factor** (based on current sensor history):  
+   $\tau_{adapt} = 1 + \beta \log(1 + \sigma_s^2)$, where $\sigma_s^2$ is the historical variance of the sensor.
+
+4. **Repeat** (merge pass) until no merges occur for a complete pass:  
+   a. Randomly select a ball $b \in \mathcal{B}$.  
+   b. Find its neighboring balls $\mathcal{N}(b)$ based on spatial adjacency.  
+   c. For each neighbor $b' \in \mathcal{N}(b)$:  
+      - Compute joint purity $P(b \cup b')$ using multi-channel information:  
+        $$P(b \cup b') = \frac{1}{C} \sum_{c=1}^{C} \exp\left( -\frac{\sigma_c^2}{\mu_c^2 + \epsilon} \right),$$  
+        where $\mu_c$ and $\sigma_c$ are mean and standard deviation of channel $c$ in the union region.  
+      - If $P(b \cup b') \ge P_{thr} \cdot \tau_{adapt}$:  
+        - Merge $b$ and $b'$ into a new ball.  
+        - Update $\mathcal{B}$.  
+        - Break the inner loop (go to next random selection).
+
+5. **For each merged ball** $v \in \mathcal{B}$, compute node features $X_v$ (geometry, image statistics, traffic semantics).
+
+6. **Construct edges** $\mathcal{E}$:  
+   For every pair of balls $u, v$:  
+   - If spatial overlap exists (pixel‑level adjacency) **or** feature similarity $\cos(X_u, X_v) > \theta_{sim}$, add edge $(u, v)$.
+
+7. **Return** $\mathcal{G}=(\mathcal{V},\mathcal{E},X)$.
 
